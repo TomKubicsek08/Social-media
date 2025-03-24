@@ -1,47 +1,25 @@
 // Social Media Impact Data
+let platforms = ["Instagram", "TikTok", "Twitter"];
+let screenTimes = [2.5, 3.2, 1.8]; // Daily screen time for each platform
+let totalWeeklyScreenTime = screenTimes.reduce((sum, time) => sum + time, 0) * 7;
 
-// Popular social media platforms (String)
-let platform1 = "Instagram";
-let platform2 = "TikTok";
-let platform3 = "Twitter";
+let anxietyPercentage = 65, depressionPercentage = 50;
 
-// Average daily screen time in hours (Number)
-let screenTimeInstagram = 2.5;
-let screenTimeTikTok = 3.2;
-let screenTimeTwitter = 1.8;
-
-// Total weekly screen time calculation
-let totalWeeklyScreenTime = (screenTimeInstagram + screenTimeTikTok + screenTimeTwitter) * 7;
-
-// Percentage of users affected by social media pressure (Number)
-let anxietyPercentage = 65;
-let depressionPercentage = 50;
-
-// Conditional logic for screen time impact
-let screenTimeMessage;
-if (totalWeeklyScreenTime > 30) {
-    screenTimeMessage = "Your social media usage is very high. Consider taking breaks!";
-} else if (totalWeeklyScreenTime > 15) {
-    screenTimeMessage = "Your usage is moderate, but balance is key!";
-} else {
-    screenTimeMessage = "Great job! You have a balanced social media routine.";
-}
-
-// Constructing a message about social media usage (String)
-let impactMessage = `On average, people spend ${totalWeeklyScreenTime.toFixed(1)} hours per week on social media. Studies show that ${anxietyPercentage}% of users experience anxiety and ${depressionPercentage}% experience depression due to social media pressure.`;
+// Conditional screen time message
+let screenTimeMessage = totalWeeklyScreenTime > 30 ? 
+    "Your social media usage is very high. Consider taking breaks!" :
+    totalWeeklyScreenTime > 15 ? "Your usage is moderate, but balance is key!" :
+    "Great job! You have a balanced social media routine.";
 
 // Insert data into the webpage
-document.getElementById("platforms").innerHTML = `Popular Platforms: ${platform1}, ${platform2}, ${platform3}`;
+document.getElementById("platforms").innerHTML = `Popular Platforms: ${platforms.join(", ")}`;
 document.getElementById("weekly-screen-time").innerHTML = `Total Weekly Screen Time: ${totalWeeklyScreenTime.toFixed(1)} hours`;
 document.getElementById("anxiety-impact").innerHTML = `Anxiety Impact: ${anxietyPercentage}% of users affected.`;
 document.getElementById("depression-impact").innerHTML = `Depression Impact: ${depressionPercentage}% of users affected.`;
-document.getElementById("impact-message").innerHTML = impactMessage + `<br><strong>${screenTimeMessage}</strong>`;
+document.getElementById("impact-message").innerHTML = `On average, people spend ${totalWeeklyScreenTime.toFixed(1)} hours per week on social media. 
+    Studies show that ${anxietyPercentage}% experience anxiety and ${depressionPercentage}% experience depression due to social media pressure.<br><strong>${screenTimeMessage}</strong>`;
 
-// ================================
-// New Feature: Social Media Facts
-// ================================
-
-// Array of social media impact facts
+// Social Media Facts
 const socialMediaFacts = [
     "Over 4.48 billion people use social media worldwide.",
     "The average person spends about 2.5 hours on social media daily.",
@@ -51,47 +29,22 @@ const socialMediaFacts = [
     "Social media plays a crucial role in spreading news, both real and fake."
 ];
 
-// Track the current fact index
 let factIndex = 0;
-
-// Function to display the next fact
-function showNextFact() {
-    let factDisplay = document.getElementById("fact-display");
-
-    // Display the current fact
-    factDisplay.innerText = socialMediaFacts[factIndex];
-
-    // Move to the next fact (loop back to the start if at the end)
+document.getElementById("next-fact").addEventListener("click", function() {
+    document.getElementById("fact-display").innerText = socialMediaFacts[factIndex];
     factIndex = (factIndex + 1) % socialMediaFacts.length;
-}
+});
 
-// Event listener for the button
-document.getElementById("next-fact").addEventListener("click", showNextFact);
-
-// ================================
-// New Feature: Platform-Specific Facts (Switch Statement)
-// ================================
-
-// Function to get platform-specific facts using a switch statement
+// Platform-Specific Facts
 function getPlatformFact(platform) {
-    let fact;
-    switch (platform.toLowerCase()) {
-        case "instagram":
-            fact = "Instagram was founded in 2010 and has over 1 billion users.";
-            break;
-        case "tiktok":
-            fact = "TikTok is the fastest-growing social media app, with over 1 billion active users.";
-            break;
-        case "twitter":
-            fact = "Twitter (now X) has around 450 million active users and is known for real-time updates.";
-            break;
-        default:
-            fact = "Platform not recognized. Try Instagram, TikTok, or Twitter.";
-    }
-    document.getElementById("fact-display").innerText = fact;
+    let facts = {
+        "instagram": "Instagram was founded in 2010 and has over 1 billion users.",
+        "tiktok": "TikTok is the fastest-growing social media app, with over 1 billion active users.",
+        "twitter": "Twitter (now X) has around 450 million active users and is known for real-time updates."
+    };
+    document.getElementById("fact-display").innerText = facts[platform.toLowerCase()] || "Platform not recognized. Try Instagram, TikTok, or Twitter.";
 }
 
-// Event listener for platform-specific facts
 document.getElementById("next-fact").addEventListener("click", function() {
     let platform = prompt("Enter a platform: Instagram, TikTok, or Twitter");
     getPlatformFact(platform);
